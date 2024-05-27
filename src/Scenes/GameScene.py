@@ -8,7 +8,8 @@ SCREEN_HEIGHT = Director.screen_height
 class GameScene(Scene) :
     cell : list[Sprite] = []
     game_background : Sprite = None
-    game_list : list[Scene] = sample([Game1, Game2, Game3, Game4, Game5, Game6, Game7, Game8, Game9], 9)
+    #game_list : list[Scene] = sample([Game1, Game2, Game3, Game4, Game5, Game6, Game7, Game8, Game9], 9)
+    game_list : list[Scene] = [Game1, Game2, Game3, Game4, Game5, Game6, Game7, Game8, Game9]
 
     @classmethod
     def Setup(cls) :

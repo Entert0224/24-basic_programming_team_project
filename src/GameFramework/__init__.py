@@ -11,5 +11,5 @@ from .Renderer import Renderer
 from .Director import Director
 from .Node import Node
 from .Sprite import Sprite
-#from .Sound import Sound
-#from .Text import Text
+from .Sound import Sound
+from .Text import Text

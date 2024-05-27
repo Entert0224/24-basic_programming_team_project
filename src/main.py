@@ -7,6 +7,7 @@ SCREEN_COLOR = (255, 255, 255)
 
 def Setup() :
     pygame.init()
+    pygame.mixer.init()
     Director.SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT)
     Director.DirectorInit("Game Tic-Tac-Toe")
     Time.clock = pygame.time.Clock()
