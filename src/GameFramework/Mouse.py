@@ -12,7 +12,6 @@ class Mouse() :
     @classmethod
     def isDown(cls) -> bool:
         """마우스를 누를 때를 감지한다."""
-
         if cls.n_click == 1 :
             return True
         
@@ -21,7 +20,6 @@ class Mouse() :
     @classmethod
     def isHold(cls) -> bool:
         """마우스를 누르고 있을 때를 감지한다."""
-
         if cls.n_click == 2 :
             return True
         
