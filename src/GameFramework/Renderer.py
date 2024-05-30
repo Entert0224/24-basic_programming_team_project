@@ -13,7 +13,7 @@ class Renderer:
     def AddNode(cls, n):
         if n not in cls.node_list:
             cls.node_list.append(n)
-            cls.node_list.sort(key=lambda node: node.layer, reverse = True)
+            cls.node_list.sort(key=lambda node: node.layer)
 
     @classmethod
     def ClearNode(cls):
@@ -27,7 +27,7 @@ class Renderer:
 
     @classmethod
     def Render(cls):
-        cls.target_render.sort(key=lambda node: node.layer, reverse = True)
+        cls.target_render.sort(key=lambda node: node.layer)
         for node in cls.target_render:
             node.Render()
             node.Update()

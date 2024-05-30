@@ -1,4 +1,4 @@
-from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite
+from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text, Sound
 from Scenes import GameScene
 
 SCREEN_WIDTH = Director.screen_width
@@ -15,13 +15,13 @@ class StartScene(Scene) :
         cls.question_mark = Sprite("assets/images/question_mark.png",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 220), visible=False)        
         cls.start_text = Sprite("assets/images/start_text.png",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 200))        
 
-
     @classmethod
     def Update(cls) :
         if cls.start_text.pointInRect(Mouse.GetMousePos()) :
             cls.start_text.scale = Vec2(1.25,1.25)
             cls.question_mark.visible = True
             if Mouse.isDown() :
+                Sound.PlaySound("click")
                 Director.ChangeScene(GameScene)
         else :
             cls.start_text.scale = Vec2(1,1)

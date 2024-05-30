@@ -1,4 +1,4 @@
-from GameFramework import Director, Renderer, Mouse, pygame, Time, Sprite
+from GameFramework import Director, Renderer, Mouse, pygame, Time, Sprite, Sound
 from Scenes import StartScene
 
 SCREEN_WIDTH = 800
@@ -7,7 +7,8 @@ SCREEN_COLOR = (255, 255, 255)
 
 def Setup() :
     pygame.init()
-    pygame.mixer.init()
+    Sound.SoundInit()
+    Sound.PreLoadSound("assets/sounds/")
     Director.SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT)
     Director.DirectorInit("Game Tic-Tac-Toe")
     Time.clock = pygame.time.Clock()
