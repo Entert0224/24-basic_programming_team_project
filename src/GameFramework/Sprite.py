@@ -1,4 +1,4 @@
-from GameFramework import pygame, Vec2, Node, TextureMNG, Director, Renderer
+from GameFramework import pygame, Vec2, Node, TextureMNG, Director, Renderer, Mouse
 
 class Sprite(Node) :
 
@@ -78,7 +78,7 @@ class Sprite(Node) :
     def Animation(self, path, frame, tickspeed) :
         pass
 
-    def pointInRect(self, position : tuple) -> bool:
+    def PointInRect(self, position : tuple) -> bool:
         x = position[0]
         y = position[1]
         if self.rect.right > x and x > self.rect.left and y > self.rect.top and y < self.rect.bottom :
@@ -86,6 +86,34 @@ class Sprite(Node) :
 
         return False
 
+    def CreateButton(self):
+        set_origin = False
+        origin_scale = self.scale
+        origin_rotation = self.rotation
+        origin_color = self.color
+
+        def Button(scale_effect=Vec2(1, 1), rotation_effect=0, color_effect=pygame.Color(255, 255, 255, 255)) -> bool:
+            nonlocal set_origin, origin_scale, origin_rotation, origin_color
+
+            if not set_origin:  
+                origin_scale = self.scale
+                origin_rotation = self.rotation
+                origin_color = self.color
+                set_origin = True
+
+            if self.PointInRect(Mouse.GetMousePos()):
+                self.scale = origin_scale.elementwise() * scale_effect
+                self.rotation = origin_rotation + rotation_effect
+                self.color = color_effect
+                return True
+            else:
+                self.scale = origin_scale
+                self.rotation = origin_rotation
+                self.color = origin_color
+                set_origin = False
+                return False
+
+        return Button
         
 
     

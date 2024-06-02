@@ -6,7 +6,7 @@ SCREEN_WIDTH = Director.screen_width
 SCREEN_HEIGHT = Director.screen_height
 
 class GameScene(Scene) :
-    cell : list[Sprite] = []
+    cell : list = []
     game_background : Sprite = None
     #game_list : list[Scene] = sample([Game1, Game2, Game3, Game4, Game5, Game6, Game7, Game8, Game9], 9)
     game_list : list[Scene] = [Game1, Game2, Game3, Game4, Game5, Game6, Game7, Game8, Game9]
@@ -19,17 +19,14 @@ class GameScene(Scene) :
                 x = SCREEN_WIDTH / 2 + (135 * j)
                 y = SCREEN_HEIGHT / 2 + 8 + (135 * i)
                 ksprite = Sprite("assets/images/OX.png", Vec2(x, y), color=pygame.Color(255,255,255,0))
-                cls.cell.append(ksprite)
+                cls.cell.append(ksprite.CreateButton())
 
     @classmethod
     def Update(cls) :
         for idx, cell in enumerate(cls.cell) :
-            if cell.pointInRect(Mouse.GetMousePos()) :
-                cell.color.a = 255
+            if cell(color_effect = pygame.Color(255,255,255,255)) :
                 if Mouse.isDown() :
                     Director.ChangeScene(cls.game_list[idx])
-            else :
-                cell.color.a = 0
 
     @classmethod
     def Exit(cls) :

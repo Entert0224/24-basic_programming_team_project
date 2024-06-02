@@ -1,3 +1,4 @@
+from .Global import Global
 from .Game1 import Game1
 from .Game2 import Game2
 from .Game3 import Game3
@@ -9,4 +10,5 @@ from .Game8 import Game8
 from .Game9 import Game9
 
 from .GameScene import GameScene
+from .TeamSettingScene import TeamSettingScene
 from .StartScene import StartScene
