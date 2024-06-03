@@ -27,18 +27,44 @@ class Text(Node) :
         if not self.visible : return
         if not self.text : return
 
-        draw_text = self.font.render(self.text, True, self.color)
+        text = self.text.replace(r"\n",'\n')
+        lines = text.split('\n')
+        rendered_lines = []
+        max_width = 0
+        total_height = 0
 
-        width = int(draw_text.get_width() * self.scale.x)
-        height = int(draw_text.get_height() * self.scale.y)
-        draw_text = pygame.transform.scale(draw_text, (width, height))
-        draw_text = pygame.transform.rotate(draw_text, self.rotation)
+        for line in lines:
+            line_surface = self.font.render(line, True, self.color)
+            width = int(line_surface.get_width() * self.scale.x)
+            height = int(line_surface.get_height() * self.scale.y)
+            line_surface = pygame.transform.scale(line_surface, (width, height))
+            line_surface = pygame.transform.rotate(line_surface, self.rotation)
 
-        self.rect = draw_text.get_rect()
-        self.rect.centerx = self.position.x
-        self.rect.centery = self.position.y
+            rendered_lines.append(line_surface)
+            max_width = max(max_width, line_surface.get_width())
+            total_height += line_surface.get_height()
 
-        Director.screen.blit(draw_text, self.rect)
+        y_offset = total_height / 2
+        for line_surface in rendered_lines:
+            self.rect = line_surface.get_rect()
+            self.rect.centerx = self.position.x
+            self.rect.centery = self.position.y + y_offset - (total_height / 2)
+
+            y_offset += line_surface.get_height()
+            Director.screen.blit(line_surface, self.rect)
+
+        # draw_text = self.font.render(self.text, True, self.color)
+
+        # width = int(draw_text.get_width() * self.scale.x)
+        # height = int(draw_text.get_height() * self.scale.y)
+        # draw_text = pygame.transform.scale(draw_text, (width, height))
+        # draw_text = pygame.transform.rotate(draw_text, self.rotation)
+
+        # self.rect = draw_text.get_rect()
+        # self.rect.centerx = self.position.x
+        # self.rect.centery = self.position.y
+
+        # Director.screen.blit(draw_text, self.rect)
 
     def SetString(self, text) :
         self.text = text

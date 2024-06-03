@@ -1,5 +1,5 @@
 from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text, Time
-from Scenes import Global
+from Scenes import Team
 import os
 from random import shuffle
 
@@ -10,7 +10,7 @@ class Game1(Scene) :
     shuffled_person = {}
     team_number = 1
     timer = 60
-    scores = [0 for i in range(0, Global.Get_team_number_count())]
+    scores = [0 for i in range(0, Team.Get_team_number_count())]
     countdown_number = 4
     picture_number = 0
 
@@ -31,9 +31,10 @@ class Game1(Scene) :
     back_text = None
     next_button = None
     back_button = None
+    end_panal = None
 
     @classmethod
-    def Setup(cls) :
+    def LoadQuizFile(cls) :
         person_path_name = {}
         for filename in os.listdir("assets/images/인물퀴즈/"):
             image_path = os.path.join("assets/images/인물퀴즈/", filename)
@@ -42,6 +43,10 @@ class Game1(Scene) :
         keys = list(person_path_name.keys())
         shuffle(keys)
         cls.shuffled_person = {key: person_path_name[key] for key in keys}
+
+    @classmethod
+    def Setup(cls) :
+        cls.LoadQuizFile()
 
         background = Sprite("assets/images/game_background.jpg",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         
@@ -60,9 +65,10 @@ class Game1(Scene) :
         cls.o_button = o_button.CreateButton()
         cls.x_button = x_button.CreateButton()
 
-        cls.score_text = Text("점수 : 0",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2), 70, 11, False, fontpath="assets/fonts/H2HDRM.TTF")
-        cls.next_text = Sprite("assets/images/next_text.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 170), visible = False, layer=11)
-        cls.back_text = Sprite("assets/images/back_text.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 170), visible = False, layer=11)
+        cls.end_panal = Sprite("assets/images/end_panal.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 19), layer = 19, visible = False)
+        cls.score_text = Text("",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2), 70, 20, False, fontpath="assets/fonts/H2HDRM.TTF")
+        cls.next_text = Sprite("assets/images/next_text.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 170), visible = False, layer=20, color=pygame.Color(0,0,0,255))
+        cls.back_text = Sprite("assets/images/back_text.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 170), visible = False, layer=20, color=pygame.Color(0,0,0,255))
         cls.next_button = cls.next_text.CreateButton()
         cls.back_button = cls.back_text.CreateButton()
 
@@ -76,6 +82,12 @@ class Game1(Scene) :
                 cls.start_text.visible = False
                 cls.countdown_text.visible = True
 
+    @classmethod
+    def ShowQuiz(cls) :
+        cls.quiz_sprite.SetTexture(list(cls.shuffled_person.keys())[cls.picture_number])
+        scale = 390/max(cls.quiz_sprite.rect.width, cls.quiz_sprite.rect.height)
+        cls.quiz_sprite.scale = Vec2(scale, scale)
+        
     @classmethod
     def CountDown(cls) :
         cls.countdown_number -= Time.GetDeltaTime()
@@ -91,8 +103,8 @@ class Game1(Scene) :
             cls.countdown_text.visible = False
             cls.is_countdown = False
             cls.quiz_sprite.visible = True
-            scale = 390/max(cls.quiz_sprite.rect.width, cls.quiz_sprite.rect.height)
-            cls.quiz_sprite.scale = Vec2(scale, scale)
+            cls.ShowQuiz()
+            
 
     @classmethod
     def Start(cls) :
@@ -118,17 +130,20 @@ class Game1(Scene) :
                 cls.is_end = True
                 return
 
-            cls.quiz_sprite.SetTexture(list(cls.shuffled_person.keys())[cls.picture_number])
-            scale = 390/max(cls.quiz_sprite.rect.width, cls.quiz_sprite.rect.height)
-            cls.quiz_sprite.scale = Vec2(scale, scale)
+            cls.ShowQuiz()
+
 
     @classmethod
     def End(cls) :
         cls.ready_panal.visible = True
+        cls.end_panal.visible = True
         cls.score_text.visible = True
-        cls.score_text.SetString(f"점수 : {cls.scores[cls.team_number - 1]}")
+        cur_team_score = cls.scores[cls.team_number - 1]
+        cls.score_text.SetString(f"점수 : {cur_team_score} / {len(cls.shuffled_person)}")
 
-        if cls.team_number >= Global.Get_team_number_count() :
+        Team.game_score[cls.team_number - 1] = cur_team_score
+
+        if cls.team_number >= Team.Get_team_number_count() :
             cls.back_text.visible = True
             if cls.back_button(Vec2(1.2,1.2)) :
                 if Mouse.isDown() :

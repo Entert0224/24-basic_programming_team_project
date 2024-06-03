@@ -1,5 +1,5 @@
 from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Sound, Text
-from Scenes import GameScene, Global
+from Scenes import GameScene, Team
 
 SCREEN_WIDTH = Director.screen_width
 SCREEN_HEIGHT = Director.screen_height
@@ -26,7 +26,7 @@ class TeamSettingScene(Scene) :
         down_button = Sprite("assets/images/up_down_btn.png",Vec2(SCREEN_WIDTH / 2 + 88, SCREEN_HEIGHT / 2 + 42), color=pygame.Color(255,255,255,195))
         cls.down_button = down_button.CreateButton()
 
-        cls.team_count_text = Text(str(Global.Get_team_number_count()), Vec2(SCREEN_WIDTH / 2 - 10, SCREEN_HEIGHT / 2 + 28),40, fontpath="assets/fonts/H2HDRM.TTF")
+        cls.team_count_text = Text(str(Team.Get_team_number_count()), Vec2(SCREEN_WIDTH / 2 - 10, SCREEN_HEIGHT / 2 + 28),40, fontpath="assets/fonts/H2HDRM.TTF")
 
     @classmethod
     def Update(cls) :
@@ -42,16 +42,16 @@ class TeamSettingScene(Scene) :
         if cls.up_button(Vec2(1.1,1.1), color_effect = pygame.Color(255,255,255,255)) :
             if Mouse.isDown() :
                 Sound.PlaySound("click")
-                k_number = Global.Get_team_number_count() + 1
-                Global.Set_team_number_count(k_number)
-                cls.team_count_text.SetString(str(Global.Get_team_number_count()))
+                k_number = Team.Get_team_number_count() + 1
+                Team.Set_team_number_count(k_number)
+                cls.team_count_text.SetString(str(Team.Get_team_number_count()))
 
         if cls.down_button(Vec2(1.1,1.1), color_effect = pygame.Color(255,255,255,255)) :
             if Mouse.isDown() :
                 Sound.PlaySound("click")
-                k_number = Global.Get_team_number_count() - 1
-                Global.Set_team_number_count(k_number)
-                cls.team_count_text.SetString(str(Global.Get_team_number_count()))
+                k_number = Team.Get_team_number_count() - 1
+                Team.Set_team_number_count(k_number)
+                cls.team_count_text.SetString(str(Team.Get_team_number_count()))
 
     @classmethod
     def Exit(cls) :

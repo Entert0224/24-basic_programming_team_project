@@ -1,4 +1,4 @@
-from .Global import Global
+from .Team import Team
 from .Game1 import Game1
 from .Game2 import Game2
 from .Game3 import Game3

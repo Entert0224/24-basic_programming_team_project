@@ -94,7 +94,7 @@ class Sprite(Node) :
         origin_rotation = self.rotation
         origin_color = self.color
 
-        def Button(scale_effect=Vec2(1, 1), rotation_effect=0, color_effect=pygame.Color(255, 255, 255, 255)) -> bool:
+        def Button(scale_effect=Vec2(1, 1), rotation_effect = self.rotation, color_effect = self.color) -> bool:
             nonlocal set_origin, origin_scale, origin_rotation, origin_color
 
             if not set_origin:  
