@@ -26,7 +26,7 @@ class TeamSettingScene(Scene) :
         down_button = Sprite("assets/images/up_down_btn.png",Vec2(SCREEN_WIDTH / 2 + 88, SCREEN_HEIGHT / 2 + 42), color=pygame.Color(255,255,255,195))
         cls.down_button = down_button.CreateButton()
 
-        cls.team_count_text = Text("0", Vec2(SCREEN_WIDTH / 2 - 10, SCREEN_HEIGHT / 2 + 28),50)
+        cls.team_count_text = Text(str(Global.Get_team_number_count()), Vec2(SCREEN_WIDTH / 2 - 10, SCREEN_HEIGHT / 2 + 28),40, fontpath="assets/fonts/H2HDRM.TTF")
 
     @classmethod
     def Update(cls) :
@@ -35,6 +35,7 @@ class TeamSettingScene(Scene) :
             if Mouse.isDown() :
                 Sound.PlaySound("click")
                 Director.ChangeScene(GameScene)
+                return
         else :
             cls.question_mark.visible = False
 

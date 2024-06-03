@@ -3,14 +3,16 @@ from GameFramework import pygame, Vec2, Node, TextureMNG, Director, Renderer, Mo
 class Sprite(Node) :
 
     def __init__(self, path : str, position : Vec2 = Vec2(0, 0),
-     pivot : Vec2 = Vec2(0.5, 0.5), rotation : float = 0, layer : int = 0, 
-     visible : bool = True, color : pygame.Color = pygame.Color(255, 255, 255, 255)) -> None :
+        pivot : Vec2 = Vec2(0.5, 0.5), rotation : float = 0, scale : Vec2 = Vec2(1,1),
+        layer : int = 0, visible : bool = True,
+        color : pygame.Color = pygame.Color(255, 255, 255, 255)) -> None :
         super().__init__()
         self.path = path
 
         self.position : Vec2 = position
         self.pivot = pivot
         self.rotation = rotation
+        self.scale = scale
         self.layer = layer
         self.visible = visible
         self.color = color

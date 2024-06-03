@@ -27,6 +27,7 @@ class GameScene(Scene) :
             if cell(color_effect = pygame.Color(255,255,255,255)) :
                 if Mouse.isDown() :
                     Director.ChangeScene(cls.game_list[idx])
+                    break
 
     @classmethod
     def Exit(cls) :
