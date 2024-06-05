@@ -13,8 +13,10 @@ class Game2(Scene) :
     
     team_number = 1
     timer = 60
-    scores = [0 for i in range(0, Team.Get_team_number_count())]
+    scores = []
     countdown_number = 4
+
+    is_first_game = True
 
     is_ready = True
     is_countdown = True
@@ -52,6 +54,10 @@ class Game2(Scene) :
 
     @classmethod
     def Setup(cls) :
+        if cls.is_first_game :
+           cls.is_first_game = False
+           cls.scores = [0 for i in range(0, Team.Get_team_number_count())]
+
         cls.LoadQuizFile()
         cls.quiz_length = len(cls.shuffled_quiz_dict)
 
@@ -152,7 +158,7 @@ class Game2(Scene) :
         cls.end_panal.visible = True
         cls.score_text.visible = True
         cur_team_score = cls.scores[cls.team_number - 1]
-        cls.score_text.SetString(f"점수 : {cur_team_score} / {len(cls.shuffled_quiz_dict)}")
+        cls.score_text.SetString(f"점수 : {cur_team_score} / {cls.quiz_length}")
 
         Team.game_score[cls.team_number - 1] = cur_team_score
 
@@ -160,8 +166,9 @@ class Game2(Scene) :
             cls.back_text.visible = True
             if cls.back_button(Vec2(1.2,1.2)) :
                 if Mouse.isDown() :
-                    from Scenes import GameScene
-                    Director.ChangeScene(GameScene)
+                    Team.GamescoreGrading()
+                    from Scenes import MiniGameResult
+                    Director.ChangeScene(MiniGameResult)
         else :
             cls.next_text.visible = True
             if cls.next_button(Vec2(1.2,1.2)) :

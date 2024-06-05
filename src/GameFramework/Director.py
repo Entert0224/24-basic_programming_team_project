@@ -8,6 +8,8 @@ class Director :
     screen_height = 600
     screen : pygame.Surface = None
 
+    event_list = []
+
     @classmethod
     def SetScreenSize(cls, width, height) :
         cls.screen_width = width
@@ -27,7 +29,8 @@ class Director :
         cur_scene = cls.__current_scene
         if cur_scene != None :
             cur_scene.Update()
-
+            
+        cls.event_list = pygame.event.get()[:]
         if(Mouse.n_click == 1) : Mouse.n_click = 2
         elif(Mouse.n_click == 3) : Mouse.n_click = 0
 

@@ -17,7 +17,7 @@ def Setup() :
 
 def Event() :
     global running
-    for event in pygame.event.get() :
+    for event in Director.event_list :
         if event.type == pygame.MOUSEBUTTONDOWN :
             Mouse.n_click = 1
 
@@ -38,7 +38,6 @@ def Update() :
 
 def Render() :
     Renderer.Render()
-
     pygame.display.flip()
 
 def Exit() :
@@ -51,9 +50,9 @@ if __name__ == "__main__" :
     Setup()
 
     while running :
+        Event()
         Update()
         Render()
-        Event()
     
     Exit()
 

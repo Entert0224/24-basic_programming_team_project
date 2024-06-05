@@ -9,9 +9,10 @@ class Game8(Scene) :
     click_count = 0
 
     team_number = 1
-    timer = 1
-    scores = [0 for i in range(0, Team.Get_team_number_count())]
+    timer = 15
+    scores = []
     countdown_number = 4
+    is_first_game = True
 
     is_ready = True
     is_countdown = True
@@ -33,6 +34,9 @@ class Game8(Scene) :
 
     @classmethod
     def Setup(cls) :
+        if cls.is_first_game :
+            cls.is_first_game = False
+            cls.scores = [0 for i in range(0, Team.Get_team_number_count())]
         background = Sprite("assets/images/game_background.jpg",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         
         team_number_text = Text(f"{str(cls.team_number)} 팀",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - 240),60,layer=12,fontpath="assets/fonts/H2HDRM.TTF")
@@ -113,8 +117,9 @@ class Game8(Scene) :
             cls.back_text.visible = True
             if cls.back_button(Vec2(1.2,1.2)) :
                 if Mouse.isDown() :
-                    from Scenes import GameScene
-                    Director.ChangeScene(GameScene)
+                    Team.GamescoreGrading()
+                    from Scenes import MiniGameResult
+                    Director.ChangeScene(MiniGameResult)
         else :
             cls.next_text.visible = True
             if cls.next_button(Vec2(1.2,1.2)) :
@@ -141,21 +146,9 @@ class Game8(Scene) :
         cls.click_count = 0
 
         cls.team_number += 1
-        cls.timer = 1
+        cls.timer = 15
         cls.countdown_number = 4
 
         cls.is_ready = True
         cls.is_countdown = True
         cls.is_end = False
-
-
-
-    
-        #cls.click_text = Text(f"Clicks: {cls.click_count}", Vec2(SCREEN_WIDTH / 2, 100), 40, fontpath="assets/fonts/H2HDRM.TTF")
-
-        # for i in range(Team.team_number_count):
-        #     text = Text(f"Team {i + 1}: {Team.team_scores[i]}", Vec2(100, 50 + i * 40), 30, fontpath="assets/fonts/H2HDRM.TTF")
-        #     cls.score_texts.append(text)
-
-        # for i, text in enumerate(cls.score_texts):
-        #     text.SetString(f"Team {i + 1}: {Team.team_scores[i]}")

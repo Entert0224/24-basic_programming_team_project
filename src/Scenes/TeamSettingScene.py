@@ -33,20 +33,22 @@ class TeamSettingScene(Scene) :
         if cls.start_button(Vec2(1.25,1.25)) :
             cls.question_mark.visible = True
             if Mouse.isDown() :
+                Team.entire_game_score = [0 for i in range(Team.Get_team_number_count())]
+                Team.game_score = [0 for i in range(Team.Get_team_number_count())]
                 Sound.PlaySound("click")
                 Director.ChangeScene(GameScene)
                 return
         else :
             cls.question_mark.visible = False
 
-        if cls.up_button(Vec2(1.1,1.1), color_effect = pygame.Color(255,255,255,255)) :
+        if cls.up_button(Vec2(1.1,1.1), 0, color_effect = pygame.Color(255,255,255,255)) :
             if Mouse.isDown() :
                 Sound.PlaySound("click")
                 k_number = Team.Get_team_number_count() + 1
                 Team.Set_team_number_count(k_number)
                 cls.team_count_text.SetString(str(Team.Get_team_number_count()))
 
-        if cls.down_button(Vec2(1.1,1.1), color_effect = pygame.Color(255,255,255,255)) :
+        if cls.down_button(Vec2(1.1,1.1), 0, color_effect = pygame.Color(255,255,255,255)) :
             if Mouse.isDown() :
                 Sound.PlaySound("click")
                 k_number = Team.Get_team_number_count() - 1

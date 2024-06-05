@@ -10,9 +10,10 @@ class Game1(Scene) :
     shuffled_person = {}
     team_number = 1
     timer = 60
-    scores = [0 for i in range(0, Team.Get_team_number_count())]
+    scores = []
     countdown_number = 4
     picture_number = 0
+    is_first_game = True
 
     is_ready = True
     is_countdown = True
@@ -46,6 +47,10 @@ class Game1(Scene) :
 
     @classmethod
     def Setup(cls) :
+        if cls.is_first_game :
+            cls.is_first_game = False
+            cls.scores = [0 for i in range(0, Team.Get_team_number_count())]
+
         cls.LoadQuizFile()
 
         background = Sprite("assets/images/game_background.jpg",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
@@ -132,7 +137,6 @@ class Game1(Scene) :
 
             cls.ShowQuiz()
 
-
     @classmethod
     def End(cls) :
         cls.ready_panal.visible = True
@@ -147,8 +151,9 @@ class Game1(Scene) :
             cls.back_text.visible = True
             if cls.back_button(Vec2(1.2,1.2)) :
                 if Mouse.isDown() :
-                    from Scenes import GameScene
-                    Director.ChangeScene(GameScene)
+                    Team.GamescoreGrading()
+                    from Scenes import MiniGameResult
+                    Director.ChangeScene(MiniGameResult)
         else :
             cls.next_text.visible = True
             if cls.next_button(Vec2(1.2,1.2)) :

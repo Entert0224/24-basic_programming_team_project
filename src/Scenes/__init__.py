@@ -1,4 +1,7 @@
 from .Team import Team
+from .TotalGameResult import TotalGameResult
+from .MiniGameResult import MiniGameResult
+from .Game1 import Game1
 from .Game1 import Game1
 from .Game2 import Game2
 from .Game3 import Game3
