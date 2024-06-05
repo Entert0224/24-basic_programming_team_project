@@ -84,8 +84,8 @@ class GameScene(Scene) :
                 cls.cell_button.append(ksprite.CreateButton())
         
         cls.notice_panal = Sprite("assets/images/end_panal.png", Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), layer=10, visible=False) 
-        cls.notice_text = Text("",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 60),size=30 ,layer=11, fontpath="assets/fonts/H2HDRM.TTF")
-        cls.check_text = Sprite("assets/images/check.png",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150),scale=Vec2(0.9,0.9),layer=11, visible=False)
+        cls.notice_text = Text("",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 80),size=30 ,layer=11, fontpath="assets/fonts/H2HDRM.TTF")
+        cls.check_text = Sprite("assets/images/check.png",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 130),scale=Vec2(0.7,0.7),layer=11, visible=False)
         cls.check_button = cls.check_text.CreateButton()
 
         if not cls.CheckLine() == 'OX' :
@@ -115,6 +115,15 @@ class GameScene(Scene) :
 
     @classmethod
     def Update(cls) :
+        if cls.check_text.visible :
+            if cls.check_button(Vec2(1.2,1.2)) :
+                if Mouse.isDown() :
+                    Sound.PlaySound("click")
+                    cls.notice_panal.visible = False
+                    cls.check_text.visible = False
+                    cls.notice_text.SetString("")
+            return
+
         for idx, cell_sprite in enumerate(cls.cell_button) :
             if idx in cls.played_game_results : continue
 
@@ -127,14 +136,7 @@ class GameScene(Scene) :
                     Director.ChangeScene(cls.game_list[idx])
                     break
 
-        if cls.check_text.visible :
-            if cls.check_button(Vec2(1.2,1.2)) :
-                if Mouse.isDown() :
-                    Sound.PlaySound("click")
-                    cls.notice_panal.visible = False
-                    cls.check_text.visible = False
-                    cls.notice_text.SetString("")
-
+        
         if cls.next_text.visible :
             if cls.next_button(Vec2(1.2,1.2)) :
                 if Mouse.isDown() :
