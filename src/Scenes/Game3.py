@@ -1,4 +1,4 @@
-from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text, Time
+from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text, Sound
 from Scenes import Team
 from random import randint
 
@@ -16,6 +16,7 @@ class Game3(Scene) :
     is_ready = True
     is_end = False
 
+    desc_panal = None
     team_number_text = None
     start_button = None
     input_box = None
@@ -31,30 +32,34 @@ class Game3(Scene) :
 
     @classmethod
     def Setup(cls) :
+        cls.desc_panal = Sprite("assets/images/Desc_random_number.png",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2), layer= 13)
         cls.scores = [0 for i in range(0, Team.Get_team_number_count())]
         cls.answer_number = randint(0, 999)
         background = Sprite("assets/images/game_background.jpg",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+        AI_mark = Sprite("assets/images/AI_mark.png",Vec2(SCREEN_WIDTH/2 + 370, SCREEN_HEIGHT/2 - 270), scale=Vec2(0.1,0.1), layer=100)
         
         cls.team_number_text = Text(f"{str(cls.team_number)} 팀",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - 240),60,layer=12,fontpath="assets/fonts/H2HDRM.TTF")
         cls.ready_panal = Sprite("assets/images/OX.png",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2), scale=Vec2(10,10), layer=10)
-        cls.start_text = Sprite("assets/images/start_text2.png",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2),layer=11)
+        cls.start_text = Sprite("assets/images/start_text2.png",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 175),layer=14,color=pygame.Color(0,0,0,255))
         cls.start_button = cls.start_text.CreateButton()
 
         cls.input_box = Sprite("assets/images/input_box.png", Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
         cls.input_text = Text("", Vec2(SCREEN_WIDTH/2 + 30, SCREEN_HEIGHT/2), 39, layer = 2, fontpath="assets/fonts/H2HDRM.TTF")
 
-        cls.next_text = Sprite("assets/images/next_text.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 170), layer=20, color=pygame.Color(0,0,0,150))
+        cls.next_text = Sprite("assets/images/next_text.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 170), layer=10, color=pygame.Color(0,0,0,150))
         
         cls.end_panal = Sprite("assets/images/end_panal.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 19),scale=Vec2(0.7,1), layer = 19, visible = False)
-        cls.back_text = Sprite("assets/images/back_text.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 170), visible = False, layer=20, color=pygame.Color(0,0,0,255))
+        cls.back_text = Sprite("assets/images/back_text.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 145), visible = False, layer=20, color=pygame.Color(0,0,0,255))
         cls.back_button = cls.back_text.CreateButton()
         cls.display_scores_text = Text("",Vec2(SCREEN_WIDTH/2 - 293, SCREEN_HEIGHT/2 - 154),38,layer=21, visible=False,fontpath="assets/fonts/H2HDRM.TTF")
-        cls.display_result_text = Text("",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 50),50,30,False,fontpath="assets/fonts/H2HDRM.TTF")
+        cls.display_result_text = Text("",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 95),50,30,False,fontpath="assets/fonts/H2HDRM.TTF")
 
     @classmethod
     def Ready(cls) :
         if cls.start_button(Vec2(1.25,1.25)) :
             if Mouse.isDown() :
+                Sound.PlaySound("click")
+                cls.desc_panal.visible = False
                 cls.is_ready = False
                 cls.ready_panal.visible = False
                 cls.start_text.visible = False
@@ -103,6 +108,7 @@ class Game3(Scene) :
             if cls.next_text.PointInRect(Mouse.GetMousePos()):
                 cls.next_text.scale = Vec2(1.2,1.2)
                 if Mouse.isDown() :
+                    Sound.PlaySound("click")
                     cls.scores[cls.team_number - 1] = int(cls.input_content)
                     cls.team_number += 1
                     cls.input_content = ""
@@ -123,6 +129,7 @@ class Game3(Scene) :
     def End(cls) :
         if cls.back_button(Vec2(1.2,1.2)) :
             if Mouse.isDown() :
+                Sound.PlaySound("click")
                 Team.GamescoreGrading()
                 from Scenes import GameScene
                 Director.ChangeScene(GameScene)

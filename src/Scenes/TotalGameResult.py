@@ -1,4 +1,4 @@
-from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text
+from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text, Sound
 from Scenes import Team
 
 SCREEN_WIDTH = Director.screen_width
@@ -12,10 +12,11 @@ class TotalGameResult(Scene) :
     @classmethod
     def Setup(cls) :
         background = Sprite("assets/images/game_background.jpg",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+        AI_mark = Sprite("assets/images/AI_mark.png",Vec2(SCREEN_WIDTH/2 + 370, SCREEN_HEIGHT/2 - 270), scale=Vec2(0.1,0.1), layer=100)
         Text("-최종 순위 공개-", Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 - 250), 50, fontpath="assets/fonts/H2HDRM.TTF")
         
         cls.score_display_text = Text("",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 ), 70, 20, False, fontpath="assets/fonts/H2HDRM.TTF")
-        cls.end_text = Sprite("assets/images/END.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 200), visible = False, layer=20, color=pygame.Color(0,0,0,255))
+        cls.end_text = Sprite("assets/images/END.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 200), layer=20, color=pygame.Color(0,0,0,255))
         cls.end_button = cls.end_text.CreateButton()
 
         Team.TotalGamescoreGrading()

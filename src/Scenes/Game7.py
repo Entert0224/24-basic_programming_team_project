@@ -29,6 +29,7 @@ class Game7(Scene) :
         cls.select_team_number = 2 if Team.Get_current_team_turn() == 1 else 1 
 
         background = Sprite("assets/images/game_background.jpg",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+        AI_mark = Sprite("assets/images/AI_mark.png",Vec2(SCREEN_WIDTH/2 + 370, SCREEN_HEIGHT/2 - 270), scale=Vec2(0.1,0.1), layer=100)
         team_number_text = Text(f"{str(Team.Get_current_team_turn())} 팀",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - 240),40,fontpath="assets/fonts/H2HDRM.TTF")
         bouns_game_text = Text("보너스 게임!",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - 190), 55, fontpath="assets/fonts/H2HDRM.TTF")
 
@@ -50,6 +51,8 @@ class Game7(Scene) :
     def Description(cls) :
         if cls.next_button(Vec2(1.2,1.2)) :
             if Mouse.isDown() :
+                Sound.PlaySound("click")
+
                 cls.is_description = False
                 cls.description_text.SetString("맞바꿀 팀의 번호를 선택해주세요.")
 
@@ -111,11 +114,12 @@ class Game7(Scene) :
 
         cur_team = Team.Get_current_team_turn()
         select_taam = cls.select_team_number
-        cls.description_text.SetString(f"{Team.Get_current_team_turn()}팀과 {cls.select_team_number}팀 점수를 맞박꿨습니다.")
+        cls.description_text.SetString(f"{Team.Get_current_team_turn()}팀과 {cls.select_team_number}팀 점수를 맞바꿨습니다.")
         Team.entire_game_score[cur_team - 1],  Team.entire_game_score[select_taam - 1] = Team.entire_game_score[select_taam - 1], Team.entire_game_score[cur_team - 1]
 
         if cls.back_button(Vec2(1.2,1.2)) :
             if Mouse.isDown() :
+                Sound.PlaySound("click")
                 from Scenes import GameScene
                 Director.ChangeScene(GameScene)
 

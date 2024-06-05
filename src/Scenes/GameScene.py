@@ -1,4 +1,4 @@
-from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text
+from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text, Sound
 from Scenes import Game1, Game2, Game3, Game4, Game5, Game6, Game7, Game8, Game9, Team, TotalGameResult
 from random import sample 
 
@@ -61,6 +61,8 @@ class GameScene(Scene) :
 
     @classmethod
     def Setup(cls) :
+        AI_mark = Sprite("assets/images/AI_mark.png",Vec2(SCREEN_WIDTH/2 + 370, SCREEN_HEIGHT/2 - 270), scale=Vec2(0.1,0.1), layer=100)
+
         cls.JudgeWinner()
 
         Team.Set_current_team_turn(Team.Get_current_team_turn() + 1)
@@ -82,8 +84,8 @@ class GameScene(Scene) :
                 cls.cell_button.append(ksprite.CreateButton())
         
         cls.notice_panal = Sprite("assets/images/end_panal.png", Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2), layer=10, visible=False) 
-        cls.notice_text = Text("",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 150),size=30 ,layer=11, fontpath="assets/fonts/H2HDRM.TTF")
-        cls.check_text = Sprite("assets/images/check.png",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 250),scale=Vec2(0.9,0.9),layer=11, visible=False)
+        cls.notice_text = Text("",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 60),size=30 ,layer=11, fontpath="assets/fonts/H2HDRM.TTF")
+        cls.check_text = Sprite("assets/images/check.png",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 150),scale=Vec2(0.9,0.9),layer=11, visible=False)
         cls.check_button = cls.check_text.CreateButton()
 
         if not cls.CheckLine() == 'OX' :
@@ -98,8 +100,6 @@ class GameScene(Scene) :
                 cls.notice_text.SetString("짝수 팀이 한 줄을 완성 했어요!\n짝수 팀 모두 300점 획득")
 
         cur_team_number_text = Text(f"{Team.Get_current_team_turn()}팀 차례", Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 250), size=50 , fontpath="assets/fonts/H2HDRM.TTF")
-        print(Team.entire_game_score)                
-        print(Team.game_score)
 
         display_scores_text_ins = Text("",Vec2(SCREEN_WIDTH/2 - 300, SCREEN_HEIGHT/2 - 154 - 35), 35, fontpath="assets/fonts/H2HDRM.TTF")
         display_scores_text = "-현재 점수-"
@@ -120,6 +120,7 @@ class GameScene(Scene) :
 
             if cell_sprite(color_effect = pygame.Color(255,255,255,255)) :
                 if Mouse.isDown() :
+                    Sound.PlaySound("click")
                     Team.is_playing = True
                     cls.previous_game_index = idx
                     cls.played_game_results[idx] = None
@@ -129,6 +130,7 @@ class GameScene(Scene) :
         if cls.check_text.visible :
             if cls.check_button(Vec2(1.2,1.2)) :
                 if Mouse.isDown() :
+                    Sound.PlaySound("click")
                     cls.notice_panal.visible = False
                     cls.check_text.visible = False
                     cls.notice_text.SetString("")
@@ -136,6 +138,7 @@ class GameScene(Scene) :
         if cls.next_text.visible :
             if cls.next_button(Vec2(1.2,1.2)) :
                 if Mouse.isDown() :
+                    Sound.PlaySound("click")
                     Director.ChangeScene(TotalGameResult)
 
     @classmethod

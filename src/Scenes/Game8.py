@@ -1,4 +1,4 @@
-from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text, Time
+from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text, Time, Sound
 from Scenes import Team
 from random import randint
 
@@ -27,9 +27,7 @@ class Game8(Scene) :
     click_button = None
     score_text = None
     next_text = None
-    back_text = None
     next_button = None
-    back_button = None
     end_panal = None
 
     @classmethod
@@ -37,11 +35,17 @@ class Game8(Scene) :
         if cls.is_first_game :
             cls.is_first_game = False
             cls.scores = [0 for i in range(0, Team.Get_team_number_count())]
+            cls.desc_panal = Sprite("assets/images/Desc_Click.png",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2), layer=13)
+            cls.start_text = Sprite("assets/images/start_text2.png",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2 + 175),layer=14,color=pygame.Color(0,0,0,255))
+        else :
+            cls.desc_panal = Sprite("assets/images/Desc_Click.png",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2), layer=13, visible = False)
+            cls.start_text = Sprite("assets/images/start_text2.png",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2),layer=14)
+ 
         background = Sprite("assets/images/game_background.jpg",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+        AI_mark = Sprite("assets/images/AI_mark.png",Vec2(SCREEN_WIDTH/2 + 370, SCREEN_HEIGHT/2 - 270), scale=Vec2(0.1,0.1), layer=100)
         
         team_number_text = Text(f"{str(cls.team_number)} 팀",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - 240),60,layer=12,fontpath="assets/fonts/H2HDRM.TTF")
         cls.ready_panal = Sprite("assets/images/OX.png",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2), scale=Vec2(10,10), layer=10)
-        cls.start_text = Sprite("assets/images/start_text2.png",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2),layer=11)
         cls.start_button = cls.start_text.CreateButton()
 
         cls.countdown_text = Text(f"3",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - 100),90,layer=5,visible=False,fontpath="assets/fonts/H2HDRM.TTF")
@@ -53,15 +57,15 @@ class Game8(Scene) :
         cls.end_panal = Sprite("assets/images/end_panal.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 19), layer = 19, visible = False)
         cls.score_text = Text("",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2), 70, 20, False, fontpath="assets/fonts/H2HDRM.TTF")
         cls.next_text = Sprite("assets/images/next_text.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 170), visible = False, layer=20, color=pygame.Color(0,0,0,255))
-        cls.back_text = Sprite("assets/images/back_text.png",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 + 170), visible = False, layer=20, color=pygame.Color(0,0,0,255))
         cls.next_button = cls.next_text.CreateButton()
-        cls.back_button = cls.back_text.CreateButton()
 
         
     @classmethod
     def Ready(cls) :
         if cls.start_button(Vec2(1.25,1.25)) :
             if Mouse.isDown() :
+                Sound.PlaySound("click")
+                cls.desc_panal.visible = False
                 cls.is_ready = False
                 cls.ready_panal.visible = False
                 cls.start_text.visible = False
@@ -92,6 +96,7 @@ class Game8(Scene) :
 
         if cls.click_button(Vec2(1.1,1.1)) :
             if Mouse.isDown() :
+                Sound.PlaySound("click")
                 cls.scores[cls.team_number - 1] += 1
             elif Mouse.isHold() :
                 cls.click_sprite.rotation = randint(-7,7)
@@ -114,9 +119,10 @@ class Game8(Scene) :
         Team.game_score[cls.team_number - 1] = cur_team_score
 
         if cls.team_number >= Team.Get_team_number_count() :
-            cls.back_text.visible = True
-            if cls.back_button(Vec2(1.2,1.2)) :
+            cls.next_text.visible = True
+            if cls.next_button(Vec2(1.2,1.2)) :
                 if Mouse.isDown() :
+                    Sound.PlaySound("click")
                     Team.GamescoreGrading()
                     from Scenes import MiniGameResult
                     Director.ChangeScene(MiniGameResult)
@@ -124,6 +130,7 @@ class Game8(Scene) :
             cls.next_text.visible = True
             if cls.next_button(Vec2(1.2,1.2)) :
                 if Mouse.isDown() :
+                    Sound.PlaySound("click")
                     Director.ChangeScene(cls)
 
     @classmethod

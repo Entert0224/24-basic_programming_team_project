@@ -12,6 +12,7 @@ from .Game7 import Game7
 from .Game8 import Game8
 from .Game9 import Game9
 
+from .HowScene import HowScene
 from .GameScene import GameScene
 from .TeamSettingScene import TeamSettingScene
 from .StartScene import StartScene

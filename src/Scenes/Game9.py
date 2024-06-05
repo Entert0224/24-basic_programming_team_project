@@ -1,6 +1,5 @@
 from GameFramework import pygame, Vec2, Scene, Director, Mouse, Sprite, Text, Sound
 from Scenes import Team
-from random import shuffle, sample
 
 SCREEN_WIDTH = Director.screen_width
 SCREEN_HEIGHT = Director.screen_height
@@ -29,6 +28,7 @@ class Game9(Scene) :
         cls.select_team_number = 2 if Team.Get_current_team_turn() == 1 else 1 
 
         background = Sprite("assets/images/game_background.jpg",Vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+        AI_mark = Sprite("assets/images/AI_mark.png",Vec2(SCREEN_WIDTH/2 + 370, SCREEN_HEIGHT/2 - 270), scale=Vec2(0.1,0.1), layer=100)
         team_number_text = Text(f"{str(Team.Get_current_team_turn())} 팀",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - 240),40,fontpath="assets/fonts/H2HDRM.TTF")
         bouns_game_text = Text("보너스 게임!",Vec2(SCREEN_WIDTH/2,SCREEN_HEIGHT/2 - 190), 55, fontpath="assets/fonts/H2HDRM.TTF")
 
@@ -50,6 +50,7 @@ class Game9(Scene) :
     def Description(cls) :
         if cls.next_button(Vec2(1.2,1.2)) :
             if Mouse.isDown() :
+                Sound.PlaySound("click")
                 cls.is_description = False
                 cls.description_text.SetString("점수를 깎을 팀 번호를 선택해주세요.")
 
@@ -120,6 +121,7 @@ class Game9(Scene) :
 
         if cls.back_button(Vec2(1.2,1.2)) :
             if Mouse.isDown() :
+                Sound.PlaySound("click")
                 from Scenes import GameScene
                 Director.ChangeScene(GameScene)
 
