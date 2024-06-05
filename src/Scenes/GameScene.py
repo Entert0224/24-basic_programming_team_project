@@ -21,7 +21,8 @@ class GameScene(Scene) :
     previous_game_index = 0
     played_game_results = dict()
 
-    Tic_Tac_Toe_baord = [['','',''] for _ in range(3)]
+    Tic_Tac_Toe_baord = [['', '', ''] for _ in range(3)]
+    duplicate_check = [[False, False, False] for _ in range(3)]
 
 
     @classmethod
@@ -39,21 +40,33 @@ class GameScene(Scene) :
     def CheckLine(cls):
         board = cls.Tic_Tac_Toe_baord
         # 가로 체크
-        for row in board:
+        for idx, row in enumerate(board):
             if row[0] == row[1] == row[2] and row[0] != '':
+                if all([cls.duplicate_check[idx][i] for i in range(3)]) : continue
+                for i in range(3) :
+                    cls.duplicate_check[idx][i] = True
                 return row[0]
         
         # 세로 체크
         for col in range(3):
             if board[0][col] == board[1][col] == board[2][col] and board[0][col] != '':
+                if all([cls.duplicate_check[i][col] for i in range(3)]) : continue
+                for i in range(3) :
+                    cls.duplicate_check[i][col] = True
                 return board[0][col]
         
         # 대각선 체크
         if board[0][0] == board[1][1] == board[2][2] and board[0][0] != '':
-            return board[0][0]
+            if not all([cls.duplicate_check[i][i] for i in range(3)]) :
+                for i in range(3) :
+                    cls.duplicate_check[i][i] = True
+                return board[0][0]
         
         if board[0][2] == board[1][1] == board[2][0] and board[0][2] != '':
-            return board[0][2]
+            if not all([cls.duplicate_check[i][2 - i] for i in range(3)]) :
+                for i in range(3) :
+                    cls.duplicate_check[i][2 - i] = True
+                return board[0][2]
         
         # 승자가 없을 경우
         return 'OX'
@@ -87,12 +100,13 @@ class GameScene(Scene) :
         cls.notice_text = Text("",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - 80),size=30 ,layer=11, fontpath="assets/fonts/H2HDRM.TTF")
         cls.check_text = Sprite("assets/images/check.png",Vec2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 + 130),scale=Vec2(0.7,0.7),layer=11, visible=False)
         cls.check_button = cls.check_text.CreateButton()
-
-        if not cls.CheckLine() == 'OX' :
+        
+        result = cls.CheckLine()
+        if not result == 'OX' :
             cls.notice_panal.visible = True
             cls.check_text.visible = True
 
-            if cls.CheckLine() == Team.ODD_TEAM_SIGN :
+            if result == Team.ODD_TEAM_SIGN :
                 Team.MakeLine(True)
                 cls.notice_text.SetString("홀수 팀이 한 줄을 완성 했어요!\n홀수 팀 모두 300점 획득")
             else :
