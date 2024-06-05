@@ -10,6 +10,8 @@ class Director :
 
     event_list = []
 
+    game_running = True
+
     @classmethod
     def SetScreenSize(cls, width, height) :
         cls.screen_width = width

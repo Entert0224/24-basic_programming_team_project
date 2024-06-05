@@ -16,7 +16,6 @@ def Setup() :
     Director.ChangeScene(StartScene)
 
 def Event() :
-    global running
     for event in Director.event_list :
         if event.type == pygame.MOUSEBUTTONDOWN :
             Mouse.n_click = 1
@@ -25,11 +24,11 @@ def Event() :
             Mouse.n_click = 3
 
         if event.type == pygame.QUIT:
-            running = False
+            Director.game_running = False
             
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                running = False
+                Director.game_running = False
         
 def Update() :
     Time.frame_time_ms = Time.clock.tick(60)
@@ -45,11 +44,10 @@ def Exit() :
     pygame.quit()
 
 
-running = True
 if __name__ == "__main__" :
     Setup()
 
-    while running :
+    while Director.game_running :
         Event()
         Update()
         Render()

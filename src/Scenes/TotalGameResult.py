@@ -32,8 +32,7 @@ class TotalGameResult(Scene) :
     def Update(cls) :
         if cls.end_button(Vec2(1.2,1.2)) :
             if Mouse.isDown() :
-                from main import running
-                running = False
+                Director.game_running = False
 
     @classmethod
     def Exit(cls) :
