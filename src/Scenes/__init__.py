@@ -1,3 +1,4 @@
+#Scenes 패키지 __init__ 파일
 from .Team import Team
 from .TotalGameResult import TotalGameResult
 from .MiniGameResult import MiniGameResult

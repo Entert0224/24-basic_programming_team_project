@@ -1,9 +1,9 @@
+#프레임 워크 패키지 __init__ 파일
 import pygame
 from pygame.math import Vector2 as Vec2 
 import os
 
 from .Scene import Scene
-#from .Singleton import Singleton
 from .Mouse import Mouse
 from .Texture import TextureMNG
 from .Time import Time

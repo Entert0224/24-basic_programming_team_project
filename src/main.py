@@ -26,9 +26,9 @@ def Event() :
         if event.type == pygame.QUIT:
             Director.game_running = False
             
-        elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                Director.game_running = False
+        # elif event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_ESCAPE:
+        #         Director.game_running = False
         
 def Update() :
     Time.frame_time_ms = Time.clock.tick(60)
